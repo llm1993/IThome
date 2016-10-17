@@ -9,13 +9,21 @@ public class Bean {
     private String imgUrl;
     private String date;
     private int color = 0xff000000;
-
     public Bean() {
     }
-
     public Bean(String title, String imgUrl) {
         this.title = title;
         this.imgUrl = imgUrl;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.title.equals(((Bean) obj).title);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.title.hashCode();
     }
 
     public String getTitle() {

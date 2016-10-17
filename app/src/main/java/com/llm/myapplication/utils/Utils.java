@@ -54,17 +54,18 @@ public class Utils {
             httpUrlConnection.setRequestMethod("GET");
             BufferedReader bfr = new BufferedReader(new InputStreamReader(
                     httpUrlConnection.getInputStream(), "utf-8"));
-            String line = null;
+            String line;
             sb = new StringBuilder();
             while ((line = bfr.readLine()) != null) {
                 sb.append(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        Pattern pattern = Pattern.compile("title\">.{0,100}</span></a>");
-        Pattern patternhtml = Pattern.compile("/html/.{1,25}\">");
-        Pattern patterndate = Pattern.compile("date\">.{0,20}</span><span");
+        Pattern pattern = Pattern.compile("title\">.+?<");
+        Pattern patternhtml = Pattern.compile("/html/.+?\">");
+        Pattern patterndate = Pattern.compile("date\">.+?<");
         Matcher matcher = pattern.matcher(sb);
         Matcher matcherhtml = patternhtml.matcher(sb);
         Matcher matcherdate = patterndate.matcher(sb);
@@ -75,10 +76,9 @@ public class Utils {
         List<String> contentList = new ArrayList<>();
         List<String> dateList = new ArrayList<>();
         int adIndex = 0;
-        boolean isMatchAll = false;
         boolean adflag = false;
         int count = 0;
-        while (!isMatchAll) {
+        while (true) {
             adflag = false;
             adIndex++;
             int counttemp = count;
@@ -88,13 +88,13 @@ public class Utils {
                 if (linetitle.contains("font"))
                     linetitle = linetitle.substring(
                             linetitle.indexOf("'>") + 2,
-                            linetitle.indexOf("</"));
+                            linetitle.lastIndexOf("<"));
                 else
                     linetitle = linetitle.substring(linetitle.indexOf(">") + 1,
-                            linetitle.indexOf("</"));
+                            linetitle.indexOf("<"));
                 if (linetitle.trim().endsWith("元")
-                        || linetitle.contains("科技宅福利")) {
-                    System.out.print(adIndex + "  " + linetitle);
+                        || linetitle.contains("科技宅福利") || linetitle.contains("白菜价")) {
+                    System.out.println(adIndex + "  " + linetitle);
                     adflag = true;
                 } else
                     titleList.add(linetitle);
@@ -102,12 +102,9 @@ public class Utils {
             if (matcherhtml.find()) {
                 count++;
                 linehtml = matcherhtml.group();
-//                System.out.println(linehtml);
                 linehtml = linehtml.substring(
                         linehtml.lastIndexOf("/") + 1, linehtml.indexOf("."));
-                if (adflag) {
-                    System.out.print(linehtml);
-                } else
+                if (!adflag)
                     contentList.add(linehtml);
             }
 
@@ -116,13 +113,11 @@ public class Utils {
                 datehtml = matcherdate.group();
                 datehtml = datehtml.substring(datehtml.indexOf(">") + 1,
                         datehtml.indexOf("<"));
-                if (adflag) {
-                    System.out.println("  " + datehtml);
-                } else
+                if (!adflag)
                     dateList.add(datehtml);
             }
             if (counttemp == count) {
-                isMatchAll = true;
+                break;
             }
         }
         if (titleList.size() != contentList.size()

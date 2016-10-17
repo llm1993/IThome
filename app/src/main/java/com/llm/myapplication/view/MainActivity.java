@@ -27,6 +27,7 @@ import com.llm.myapplication.utils.GetContent;
 import com.llm.myapplication.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
@@ -114,21 +115,33 @@ public class MainActivity extends AppCompatActivity
         // 在这里加载最新数据
         if (Utils.isNetworkConnected(getApplicationContext())) {
             // 如果网络可用，则加载网络数据
-            new AsyncTask<Void, Void, Void>() {
+            new AsyncTask<Void, Void, Integer>() {
                 @Override
-                protected Void doInBackground(Void... params) {
+                protected Integer doInBackground(Void... params) {
                     page = 1;
                     beansAdd = Utils.getData(page);
+                    if (beansAdd == null) {
+                        return -1;
+                    }
                     page = page + 1;
-                    return null;
+                    return 0;
                 }
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
+                protected void onPostExecute(Integer result) {
                     // 加载完毕后在UI线程结束下拉刷新
                     mRefreshLayout.endRefreshing();
+                    if (result == -1) {
+                        Toast.makeText(MainActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    //beans.clear();
+                    beans.addAll(0, beansAdd);
+                    LinkedHashSet<Bean> set = new LinkedHashSet();
+                    set.addAll(beans);
                     beans.clear();
-                    beans.addAll(beansAdd);
+                    beans.addAll(set);
+                    System.out.println(beans.size());
                     listViewAdapter.notifyDataSetChanged();
                 }
             }.execute();
@@ -145,19 +158,31 @@ public class MainActivity extends AppCompatActivity
 
         if (Utils.isNetworkConnected(getApplicationContext())) {
             // 如果网络可用，则异步加载网络数据，并返回true，显示正在加载更多
-            new AsyncTask<Void, Void, Void>() {
+            new AsyncTask<Void, Void, Integer>() {
 
                 @Override
-                protected Void doInBackground(Void... params) {
+                protected Integer doInBackground(Void... params) {
                     beansAdd = Utils.getData(page++);
-                    return null;
+                    if (beansAdd == null) {
+                        page--;
+                        return -1;
+                    }
+                    return 0;
                 }
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
+                protected void onPostExecute(Integer result) {
+                    if (result == -1) {
+                        Toast.makeText(MainActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     // 加载完毕后在UI线程结束加载更多
                     mRefreshLayout.endLoadingMore();
                     beans.addAll(beansAdd);
+                    LinkedHashSet<Bean> set = new LinkedHashSet();
+                    set.addAll(beans);
+                    beans.clear();
+                    beans.addAll(set);
                     listViewAdapter.notifyDataSetChanged();
                 }
             }.execute();
@@ -253,7 +278,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            if(Utils.type!=0){
+            if (Utils.type != 0) {
                 Utils.type = 0;
                 toolbar.setTitle("首页");
                 beginRefreshing();
