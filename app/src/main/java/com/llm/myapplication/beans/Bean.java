@@ -7,6 +7,7 @@ package com.llm.myapplication.beans;
 public class Bean {
     private String title;
     private String imgUrl;
+    private String date;
     private int color = 0xff000000;
 
     public Bean() {
@@ -39,5 +40,13 @@ public class Bean {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

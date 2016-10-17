@@ -50,12 +50,14 @@ public class ListViewAdapter extends BaseAdapter {
             // 通过findViewById()方法实例R.layout.item_list内各组件
             holder.text = (TextView) convertView.findViewById(R.id.title);
             holder.image = (ImageView) convertView.findViewById(R.id.listimg);
+            holder.date = (TextView) convertView.findViewById(R.id.date);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
         // 给holder中的控件进行赋值
         Bean bean = beans.get(position);
         holder.text.setText(bean.getTitle());
+        holder.date.setText(bean.getDate());
         holder.text.setTextColor(bean.getColor());
         holder.image.setImageResource(R.drawable.c);
         Picasso.with(context)

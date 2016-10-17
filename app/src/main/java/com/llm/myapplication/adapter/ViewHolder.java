@@ -10,4 +10,5 @@ import android.widget.TextView;
 public class ViewHolder {
     public ImageView image;
     public TextView text;
+    public TextView date;
 }
