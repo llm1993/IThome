@@ -29,6 +29,7 @@ public class GetContent {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         String newssource = sb.substring(sb.indexOf("<newssource>") + 12,sb.indexOf("</newssource>"));
         String newsauthor =sb.substring(sb.indexOf("<newsauthor>") + 12,sb.indexOf("</newsauthor>"));

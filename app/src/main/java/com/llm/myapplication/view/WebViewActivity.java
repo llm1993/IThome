@@ -23,6 +23,9 @@ public class WebViewActivity extends AppCompatActivity {
             if (msg.what == 1) {
                 webView.loadDataWithBaseURL(null, msg.obj.toString(), "text/html", "utf-8", null);
             }
+            if (msg.what == -1) {
+                Toast.makeText(getApplicationContext(), "网络不可用", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -56,6 +59,8 @@ public class WebViewActivity extends AppCompatActivity {
                     Message message = new Message();
                     message.what = 1;
                     message.obj = GetContent.getHtml(intent.getStringExtra("title").toString(), Utils.map.get(intent.getStringExtra("title")).toString());
+                    if (message.obj == null)
+                        message.what = -1;
                     handler.sendMessage(message);
                 }
             }).start();
