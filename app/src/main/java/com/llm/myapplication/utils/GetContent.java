@@ -31,12 +31,12 @@ public class GetContent {
             e.printStackTrace();
             return null;
         }
-        String newssource = sb.substring(sb.indexOf("<newssource>") + 12,sb.indexOf("</newssource>"));
-        String newsauthor =sb.substring(sb.indexOf("<newsauthor>") + 12,sb.indexOf("</newsauthor>"));
-        String z =sb.substring(sb.indexOf("<z>") + 3,sb.indexOf("</z>"));
+        String newssource = sb.substring(sb.indexOf("<newssource>") + 12, sb.indexOf("</newssource>"));
+        String newsauthor = sb.substring(sb.indexOf("<newsauthor>") + 12, sb.indexOf("</newsauthor>"));
+        String z = sb.substring(sb.indexOf("<z>") + 3, sb.indexOf("</z>"));
         String string = sb.substring(sb.indexOf("<detail>") + 8, sb.indexOf("</detail>")).replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("amp;", "");
-        return "<html><head><style>body{font-size:13pt;margin:13px}img{clear: both;\n" +
+        return "<html><head><style>body{font-size:13pt;margin:13px;line-height:25px;letter-spacing:1px;}img{clear: both;\n" +
                 " display: block;\n" +
-                " margin:auto;max-width:" + (width - 26) + "px !important;}</style></head><body><div><h3>" + title + "</h3><span style=\"font-size:8pt;\">来源："+newssource+"&nbsp;&nbsp;&nbsp;作者："+newsauthor+"&nbsp;&nbsp;&nbsp;责编："+z+"</span><br><HR style=\"border:1 dashed #987cb9\" width=\"100%\"></div>" + string + "</body></html>";
+                " margin:auto;max-width:" + (width - 26) + "px !important;}</style></head><body><div><h3>" + title + "</h3><span style=\"font-size:8pt;\">来源：" + newssource + "&nbsp;&nbsp;&nbsp;作者：" + newsauthor + "&nbsp;&nbsp;&nbsp;责编：" + z + "</span><br><HR style=\"border:1 dashed #987cb9\" width=\"100%\"></div>" + string + "</body></html>";
     }
 }

@@ -16,7 +16,7 @@ import com.llm.myapplication.utils.GetContent;
 import com.llm.myapplication.utils.Utils;
 
 public class WebViewActivity extends AppCompatActivity {
-    WebView webView;
+    private WebView webView;
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
