@@ -1,4 +1,4 @@
-package com.llm.myapplication;
+package com.llm.myapplication.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
