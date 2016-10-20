@@ -50,35 +50,36 @@ public class Utils {
     public static Map map = new HashMap();
     public static int type = 0;
 
-    public static String getNewsXmlList(String id) {
-        String urlStr = null;
-        if (id == null) {
-            urlStr = "http://api.ithome.com/xml/newslist/news.xml" + "?r=" + System.currentTimeMillis();
-        } else {
-            urlStr = "http://api.ithome.com/xml/newslist/news_" + getKeyByID(id, 1) + ".xml?r=" + System.currentTimeMillis();
-        }
-        return getRespByHttp(urlStr);
-    }
+	public static String getNewsXmlUrl() {
+		return getNewsXmlUrl(null);
+	}
 
-    private static String getRespByHttp(String urlStr) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            URL url = new URL(urlStr);
-            HttpURLConnection httpUrlConnection = (HttpURLConnection) url
-                    .openConnection();
-            httpUrlConnection.setRequestMethod("GET");
-            BufferedReader bfr = new BufferedReader(new InputStreamReader(
-                    httpUrlConnection.getInputStream(), "utf-8"));
-            String line;
-            while ((line = bfr.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return sb.toString().trim();
-    }
+	public static String getNewsXmlUrl(String id) {
+		String urlStr = null;
+		if (id == null) {
+			urlStr = "http://api.ithome.com/xml/newslist/news.xml" + "?r=" + System.currentTimeMillis();
+		} else {
+			urlStr = "http://api.ithome.com/xml/newslist/news_" + getKeyByID(id, 1) + ".xml?r="
+					+ System.currentTimeMillis();
+		}
+		return urlStr;
+	}
+
+	public static String getCommentJsonUrl(String id) {
+		return getCommentJsonUrl(id, null);
+	}
+
+	public static String getCommentJsonUrl(String id, String floorID) {
+		String urlStr = null;
+		if (floorID == null) {
+			urlStr = "http://www.ithome.com/json/commentlist/" + id.substring(0, 3) + "/" + getKeyByID(id, 2)
+					+ ".json?r=" + System.currentTimeMillis();
+		} else {
+			urlStr = "http://www.ithome.com/json/commentlist/" + id.substring(0, 3) + "/" + getKeyByID(id, 2) + "_"
+					+ floorID + ".json?r=" + System.currentTimeMillis();
+		}
+		return urlStr;
+	}
 
     public static String getCommentJsonList(String id) {
         String urlStr = null;
