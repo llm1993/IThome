@@ -1,4 +1,4 @@
-package com.llm.beans;
+package com.llm.myapplication.beans;
 
 import java.util.List;
 
