@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.llm.myapplication.beans.Bean;
+import com.llm.myapplication.beans.NewsBean;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -88,7 +88,7 @@ public class Utils {
         } else {
             urlStr = "http://api.ithome.com/xml/newslist/news" + getKeyByID(id, 2) + ".xml?r=" + System.currentTimeMillis();
         }
-        return getRespByHttp(urlStr);
+        return urlStr;
     }
 
     public static String getKeyByID(String id, int keyType) {
@@ -233,9 +233,9 @@ public class Utils {
         SimpleDateFormat sFormat = new SimpleDateFormat("yyyy/MM");
         for (int index = 0; index < titleList.size(); index++) {
             String title = titleList.get(index);
-            Bean bean = new Bean();
+            NewsBean bean = new NewsBean();
             bean.setTitle(title);
-            bean.setDate(dateList.get(index));
+            bean.setPostDate(dateList.get(index));
             String url = "http://img.ithome.com/newsuploadfiles/thumbnail/" + sFormat.format(date) + "/" + contentList.get(index) + ".jpg";
 //            System.out.println(url);
             bean.setImgUrl(url);

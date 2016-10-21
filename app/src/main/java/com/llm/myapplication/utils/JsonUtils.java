@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.llm.beans.Comment;
+import com.llm.myapplication.beans.Comment;
 
 public class JsonUtils {
 	public static List<Comment> getCommentList(String commentJsonUrl){
