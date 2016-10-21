@@ -1,6 +1,7 @@
 package com.llm.myapplication.utils;
 
-import com.llm.beans.NewsBean;
+
+import com.llm.myapplication.beans.NewsBean;
 
 public class AdCheck {
 	/**

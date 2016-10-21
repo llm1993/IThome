@@ -1,5 +1,8 @@
 package com.llm.myapplication.utils;
 
+import com.llm.myapplication.beans.ContentBean;
+import com.llm.myapplication.beans.NewsBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +12,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.llm.beans.ContentBean;
-import com.llm.beans.NewsBean;
 
 public class XmlUtils {
 	
