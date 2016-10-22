@@ -13,8 +13,10 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.llm.myapplication.R;
+import com.llm.myapplication.beans.NewsBean;
 import com.llm.myapplication.utils.GetContent;
 import com.llm.myapplication.utils.Utils;
+import com.llm.myapplication.utils.XmlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +105,9 @@ public class WebViewActivity extends AppCompatActivity {
                 public void run() {
                     Message message = new Message();
                     message.what = 1;
-                    message.obj = GetContent.getHtml(intent.getStringExtra("title").toString(), Utils.map.get(intent.getStringExtra("title")).toString());
+                    NewsBean newsBean = (NewsBean) intent.getSerializableExtra("bean");
+                    XmlUtils.setContent(newsBean);
+                    message.obj = GetContent.get(newsBean);
                     if (message.obj == null)
                         message.what = -1;
                     handler.sendMessage(message);

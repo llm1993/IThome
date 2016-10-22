@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.llm.myapplication.R;
-import com.llm.myapplication.beans.Bean;
+import com.llm.myapplication.beans.NewsBean;
 import com.llm.myapplication.view.MainActivity;
 import com.squareup.picasso.Picasso;
 
@@ -20,10 +20,10 @@ import java.util.ArrayList;
  */
 
 public class ListViewAdapter extends BaseAdapter {
-    ArrayList<Bean> beans = new ArrayList<Bean>();
+    ArrayList<NewsBean> beans = new ArrayList<NewsBean>();
     private Context context;
 
-    public ListViewAdapter(ArrayList<Bean> beans, Context context) {
+    public ListViewAdapter(ArrayList<NewsBean> beans, Context context) {
         this.beans = beans;
         this.context = context;
     }
@@ -55,10 +55,12 @@ public class ListViewAdapter extends BaseAdapter {
         }
         holder = (ViewHolder) convertView.getTag();
         // 给holder中的控件进行赋值
-        Bean bean = beans.get(position);
+        NewsBean bean = beans.get(position);
         holder.text.setText(bean.getTitle());
-        holder.date.setText(bean.getDate());
-        holder.text.setTextColor(bean.getColor());
+        holder.date.setText(bean.getPostDate());
+        if (bean.getColor().equals("")) {
+            holder.text.setTextColor(Integer.parseInt(bean.getColor().replace("#", "")));
+        }
         holder.image.setImageResource(R.drawable.c);
         Picasso.with(context)
                 .load(bean.getImgUrl())

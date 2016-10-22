@@ -26,20 +26,19 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by SAMSUNG on 2016/9/25.
  * GET http://api.ithome.com/xml/newslist/maxnewsid.xml 获取最新的文章id
-
- GET http://api.ithome.com/xml/newslist/news.xml?r=1474978735185 最新列表
-
- GET http://api.ithome.com/xml/newslist/news_75b9e75b220e9192.xml?r=1474979005762 根据id取出50条
-
- GET http://api.ithome.com/xml/newscontent/260/899.xml?r=1474978227754  获取文章内容
-
- GET http://api.ithome.com/json/tags/0260/260899.json 相关文章
-
-
- GET http://api.ithome.com/json/hotcommentlist/265/1f850e0010530a8f.json?r=1474978227757 获取热门评论
- GET http://www.ithome.com/json/commentlist/265/1f850e0010530a8f.json?r=1476919608657 获取最新评论
- GET http://www.ithome.com/json/commentlist/1f850e0010530a8f_19654999.json?r=1476919819261 根据上面评论最后id获取评论
-
+ * <p>
+ * GET http://api.ithome.com/xml/newslist/news.xml?r=1474978735185 最新列表
+ * <p>
+ * GET http://api.ithome.com/xml/newslist/news_75b9e75b220e9192.xml?r=1474979005762 根据id取出50条
+ * <p>
+ * GET http://api.ithome.com/xml/newscontent/260/899.xml?r=1474978227754  获取文章内容
+ * <p>
+ * GET http://api.ithome.com/json/tags/0260/260899.json 相关文章
+ * <p>
+ * <p>
+ * GET http://api.ithome.com/json/hotcommentlist/265/1f850e0010530a8f.json?r=1474978227757 获取热门评论
+ * GET http://www.ithome.com/json/commentlist/265/1f850e0010530a8f.json?r=1476919608657 获取最新评论
+ * GET http://www.ithome.com/json/commentlist/1f850e0010530a8f_19654999.json?r=1476919819261 根据上面评论最后id获取评论
  */
 
 public class Utils {
@@ -50,36 +49,36 @@ public class Utils {
     public static Map map = new HashMap();
     public static int type = 0;
 
-	public static String getNewsXmlUrl() {
-		return getNewsXmlUrl(null);
-	}
+    public static String getNewsXmlUrl() {
+        return getNewsXmlUrl(null);
+    }
 
-	public static String getNewsXmlUrl(String id) {
-		String urlStr = null;
-		if (id == null) {
-			urlStr = "http://api.ithome.com/xml/newslist/news.xml" + "?r=" + System.currentTimeMillis();
-		} else {
-			urlStr = "http://api.ithome.com/xml/newslist/news_" + getKeyByID(id, 1) + ".xml?r="
-					+ System.currentTimeMillis();
-		}
-		return urlStr;
-	}
+    public static String getNewsXmlUrl(String id) {
+        String urlStr = null;
+        if (id == null) {
+            urlStr = "http://api.ithome.com/xml/newslist/news.xml" + "?r=" + System.currentTimeMillis();
+        } else {
+            urlStr = "http://api.ithome.com/xml/newslist/news_" + getKeyByID(id, 1) + ".xml?r="
+                    + System.currentTimeMillis();
+        }
+        return urlStr;
+    }
 
-	public static String getCommentJsonUrl(String id) {
-		return getCommentJsonUrl(id, null);
-	}
+    public static String getCommentJsonUrl(String id) {
+        return getCommentJsonUrl(id, null);
+    }
 
-	public static String getCommentJsonUrl(String id, String floorID) {
-		String urlStr = null;
-		if (floorID == null) {
-			urlStr = "http://www.ithome.com/json/commentlist/" + id.substring(0, 3) + "/" + getKeyByID(id, 2)
-					+ ".json?r=" + System.currentTimeMillis();
-		} else {
-			urlStr = "http://www.ithome.com/json/commentlist/" + id.substring(0, 3) + "/" + getKeyByID(id, 2) + "_"
-					+ floorID + ".json?r=" + System.currentTimeMillis();
-		}
-		return urlStr;
-	}
+    public static String getCommentJsonUrl(String id, String floorID) {
+        String urlStr = null;
+        if (floorID == null) {
+            urlStr = "http://www.ithome.com/json/commentlist/" + id.substring(0, 3) + "/" + getKeyByID(id, 2)
+                    + ".json?r=" + System.currentTimeMillis();
+        } else {
+            urlStr = "http://www.ithome.com/json/commentlist/" + id.substring(0, 3) + "/" + getKeyByID(id, 2) + "_"
+                    + floorID + ".json?r=" + System.currentTimeMillis();
+        }
+        return urlStr;
+    }
 
     public static String getCommentJsonList(String id) {
         String urlStr = null;
@@ -255,5 +254,24 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static String getMaxId() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            URL url = new URL("http://api.ithome.com/xml/newslist/maxnewsid.xml");
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) url
+                    .openConnection();
+            httpUrlConnection.setRequestMethod("GET");
+            BufferedReader bfr = new BufferedReader(new InputStreamReader(
+                    httpUrlConnection.getInputStream(), "utf-8"));
+            String line;
+            while ((line = bfr.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString().trim();
     }
 }

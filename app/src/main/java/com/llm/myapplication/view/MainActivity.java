@@ -22,12 +22,15 @@ import android.widget.Toast;
 
 import com.llm.myapplication.R;
 import com.llm.myapplication.adapter.ListViewAdapter;
-import com.llm.myapplication.beans.Bean;
+import com.llm.myapplication.beans.NewsBean;
 import com.llm.myapplication.utils.GetContent;
+import com.llm.myapplication.utils.JsonUtils;
 import com.llm.myapplication.utils.Utils;
+import com.llm.myapplication.utils.XmlUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
@@ -38,8 +41,8 @@ public class MainActivity extends AppCompatActivity
     private static int page = 1;
     private BGARefreshLayout mRefreshLayout;
     private ListView listView;
-    private ArrayList<Bean> beans = new ArrayList<Bean>();
-    private ArrayList<Bean> beansAdd = new ArrayList<Bean>();
+    private List<NewsBean> beans = new ArrayList<NewsBean>();
+    private List<NewsBean> beansAdd = new ArrayList<NewsBean>();
     private ListViewAdapter listViewAdapter;
     private Toolbar toolbar;
 
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         listView = (ListView) findViewById(R.id.listView);
-        listViewAdapter = new ListViewAdapter(beans, this);
+        listViewAdapter = new ListViewAdapter((ArrayList<NewsBean>) beans, this);
         listView.setAdapter(listViewAdapter);
         ListsetOnItemClickListener();
 
@@ -118,12 +121,17 @@ public class MainActivity extends AppCompatActivity
             new AsyncTask<Void, Void, Integer>() {
                 @Override
                 protected Integer doInBackground(Void... params) {
-                    page = 1;
-                    beansAdd = Utils.getData(page);
+                    String startId = null;
+                    if (beans.size() != 0) {
+                        startId = beans.get(0).getNewsID();
+                    }
+                    beansAdd = XmlUtils.getListBeans(startId, Utils.getNewsXmlUrl());
                     if (beansAdd == null) {
                         return -1;
                     }
-                    page = page + 1;
+                    if (beansAdd.size() == 0) {
+                        return 1;
+                    }
                     return 0;
                 }
 
@@ -135,13 +143,15 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(MainActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    //beans.clear();
+                    if (result == 1) {
+                        Toast.makeText(MainActivity.this, "暂无最新！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     beans.addAll(0, beansAdd);
-                    LinkedHashSet<Bean> set = new LinkedHashSet();
+                    LinkedHashSet<NewsBean> set = new LinkedHashSet();
                     set.addAll(beans);
                     beans.clear();
                     beans.addAll(set);
-                    System.out.println(beans.size());
                     listViewAdapter.notifyDataSetChanged();
                 }
             }.execute();
@@ -162,9 +172,9 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 protected Integer doInBackground(Void... params) {
-                    beansAdd = Utils.getData(page++);
+                    String id = beans.get(beans.size() - 1).getNewsID();
+                    beansAdd = XmlUtils.getListBeans(id, Utils.getNewsXmlUrl(id));
                     if (beansAdd == null) {
-                        page--;
                         return -1;
                     }
                     return 0;
@@ -179,10 +189,6 @@ public class MainActivity extends AppCompatActivity
                     // 加载完毕后在UI线程结束加载更多
                     mRefreshLayout.endLoadingMore();
                     beans.addAll(beansAdd);
-                    LinkedHashSet<Bean> set = new LinkedHashSet();
-                    set.addAll(beans);
-                    beans.clear();
-                    beans.addAll(set);
                     listViewAdapter.notifyDataSetChanged();
                 }
             }.execute();
@@ -219,7 +225,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
-                beans.get(position).setColor(0xff888888);
+                beans.get(position).setColor("0xff888888");
                 new AsyncTask<Void, Void, Void>() {
 
                     @Override
@@ -237,7 +243,7 @@ public class MainActivity extends AppCompatActivity
                         listViewAdapter.notifyDataSetChanged();
                     }
                 }.execute();
-                intent.putExtra("title", beans.get(position).getTitle());
+                intent.putExtra("bean", beans.get(position));
                 startActivity(intent);
             }
         });

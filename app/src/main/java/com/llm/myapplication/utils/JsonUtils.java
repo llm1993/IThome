@@ -40,19 +40,4 @@ public class JsonUtils {
 		}
 		return list;
 	}
-	public static void main(String[] args) throws Exception{
-		StringBuilder sb = new StringBuilder();
-		BufferedReader bfr = new BufferedReader(new InputStreamReader(JsonUtils.class.getResourceAsStream("1.txt")));
-		String line;
-		sb = new StringBuilder();
-		while ((line = bfr.readLine()) != null) {
-			sb.append(line);
-		}
-		System.out.println(sb);
-//		List<Comment> json = JSON.parseArray(sb.toString(), Comment.class);
-		Gson gson = new Gson();
-		List<Comment> json = gson.fromJson(sb.toString(), new TypeToken<List<Comment>>() {}.getType());
-		System.out.println(json.size());
-		System.out.println(json.get(0).getM().getCi());
-	}
 }

@@ -6,7 +6,9 @@ package com.llm.myapplication.beans;
 
 import com.llm.myapplication.utils.XmlUtils;
 
-public class NewsBean {
+import java.io.Serializable;
+
+public class NewsBean implements Serializable {
 
 	private String newsID;
 	private String title;
