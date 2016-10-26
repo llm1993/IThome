@@ -24,7 +24,6 @@ import com.llm.myapplication.R;
 import com.llm.myapplication.adapter.ListViewAdapter;
 import com.llm.myapplication.beans.NewsBean;
 import com.llm.myapplication.utils.GetContent;
-import com.llm.myapplication.utils.JsonUtils;
 import com.llm.myapplication.utils.Utils;
 import com.llm.myapplication.utils.XmlUtils;
 
@@ -38,7 +37,6 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BGARefreshLayout.BGARefreshLayoutDelegate {
-    private static int page = 1;
     private BGARefreshLayout mRefreshLayout;
     private ListView listView;
     private List<NewsBean> beans = new ArrayList<NewsBean>();
@@ -225,6 +223,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
+                intent.putExtra("newsid", beans.get(position).getNewsID());
                 beans.get(position).setColor("0xff888888");
                 new AsyncTask<Void, Void, Void>() {
 
@@ -284,25 +283,35 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            if (Utils.type != 0) {
-                Utils.type = 0;
+            if (!Utils.kind.equals("news")) {
+                Utils.kind = "news";
                 toolbar.setTitle("首页");
                 beginRefreshing();
             }
         } else if (id == R.id.nav_android) {
-            Utils.type = 10;
-            toolbar.setTitle("安卓");
-            beginRefreshing();
+            if (!Utils.kind.equals("android")) {
+                Utils.kind = "android";
+                beans.clear();
+                toolbar.setTitle("安卓");
+                beginRefreshing();
+            }
         } else if (id == R.id.nav_iphone) {
-            Utils.type = 5;
-            toolbar.setTitle("iPhone");
-            beginRefreshing();
-        } else if (id == R.id.nav_windowsphone) {
-            Utils.type = 18;
-            toolbar.setTitle("WindowsPhoneP");
-            beginRefreshing();
+            if (!Utils.kind.equals("ios")) {
+                Utils.kind = "ios";
+                beans.clear();
+                toolbar.setTitle("iPhone");
+                beginRefreshing();
+            }
+        } else if (id == R.id.nav_windows) {
+            if (!Utils.kind.equals("windows")) {
+                Utils.kind = "windows";
+                beans.clear();
+                toolbar.setTitle("Windows");
+                beginRefreshing();
+            }
         } else if (id == R.id.nav_setting) {
-
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);

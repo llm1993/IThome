@@ -4,12 +4,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by SAMSUNG on 2016/10/16.
+ * Created by SAMSUNG on 2016/10/23.
  */
 
-public class ViewHolder {
+public class CommentViewHolder {
     public ImageView image;
-    public TextView text;
-    public TextView date;
+    public TextView username;
+    public TextView floor;
     public TextView comment;
+    public TextView date;
 }

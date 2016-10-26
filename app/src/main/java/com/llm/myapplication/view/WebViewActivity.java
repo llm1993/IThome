@@ -7,12 +7,16 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.llm.myapplication.R;
+import com.llm.myapplication.beans.Comment;
 import com.llm.myapplication.beans.NewsBean;
 import com.llm.myapplication.utils.GetContent;
 import com.llm.myapplication.utils.Utils;
@@ -24,6 +28,7 @@ import java.util.List;
 public class WebViewActivity extends AppCompatActivity {
     private WebView webView;
     private List list = new ArrayList();
+    private String newsid;
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -52,8 +57,9 @@ public class WebViewActivity extends AppCompatActivity {
                 if (message.obj == null)
                     message.what = -1;
                 handler.sendMessage(message);
-            } else
+            } else{
                 WebViewActivity.this.finish();
+            }
         }
         return true;
     }
@@ -63,7 +69,7 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.webview_toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitle("内容");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +80,8 @@ public class WebViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         webView = (WebView) findViewById(R.id.webview);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
 
@@ -99,6 +107,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         });
         final Intent intent = getIntent();
+        newsid = intent.getStringExtra("newsid");
         if (Utils.isNetworkConnected(getApplicationContext())) {
             new Thread(new Runnable() {
                 @Override
@@ -117,5 +126,23 @@ public class WebViewActivity extends AppCompatActivity {
             // 网络不可用，返回false，不显示正在加载更多
             Toast.makeText(this, "网络不可用", Toast.LENGTH_SHORT).show();
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.webview, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.commentIcon) {
+            Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+            intent.putExtra("newsid",newsid);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

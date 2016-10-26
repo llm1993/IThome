@@ -37,22 +37,39 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="This is a card view"
                     android:textColor="@android:color/black" />
 
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:text="20日"
-                    android:textColor="#80000000"
-                    android:textSize="28px" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_marginBottom="0dp"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="2016-10-23 9:14:05"
+                        android:textSize="12sp"
+                        android:textColor="#80000000" />
+                    <TextView
+                        android:id="@+id/comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="0dp"
+                        android:paddingRight="1dp"
+                        android:textSize="12sp"
+                        android:text="2000"
+                        android:textColor="#80000000" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

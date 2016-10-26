@@ -27,6 +27,11 @@
         <activity
             android:name=".view.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".view.CommentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

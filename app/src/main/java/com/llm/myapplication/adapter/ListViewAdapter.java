@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 
 public class ListViewAdapter extends BaseAdapter {
-    ArrayList<NewsBean> beans = new ArrayList<NewsBean>();
+    private ArrayList<NewsBean> beans = new ArrayList<NewsBean>();
     private Context context;
 
     public ListViewAdapter(ArrayList<NewsBean> beans, Context context) {
@@ -51,6 +51,7 @@ public class ListViewAdapter extends BaseAdapter {
             holder.text = (TextView) convertView.findViewById(R.id.title);
             holder.image = (ImageView) convertView.findViewById(R.id.listimg);
             holder.date = (TextView) convertView.findViewById(R.id.date);
+            holder.comment = (TextView) convertView.findViewById(R.id.comment);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
@@ -58,6 +59,7 @@ public class ListViewAdapter extends BaseAdapter {
         NewsBean bean = beans.get(position);
         holder.text.setText(bean.getTitle());
         holder.date.setText(bean.getPostDate());
+        holder.comment.setText("回复: "+bean.getCommentcount());
         if (bean.getColor().equals("")) {
             holder.text.setTextColor(Integer.parseInt(bean.getColor().replace("#", "")));
         }
